@@ -28,7 +28,7 @@ const App = () => {
       if(categories[filteredList[i].category].expense) {
         expenseCount += filteredList[i].value
       } else {
-        incomeCount += filteredList[i].value
+        incomeCount += filteredList[i].value;
       }
     }
     setIncome(incomeCount)
@@ -40,7 +40,6 @@ const App = () => {
   const handleAddItem = (item: Item) => {
     setList([...list, item])
   }
-
   return (
     <C.Container>
       <C.Header>
@@ -53,7 +52,7 @@ const App = () => {
           income={income}
           expense={expense}
           />
-        <InputArea onAdd={handleAddItem} />
+        <InputArea onAddItem={handleAddItem} />
         <TableArea list={filteredList} />
       </C.Body>
     </C.Container>
