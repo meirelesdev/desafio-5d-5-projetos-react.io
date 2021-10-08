@@ -1,72 +1,50 @@
-import { useState, useEffect, FormEvent } from 'react'
-import * as C from './App.styles'
-import * as Photos from './services/photos'
-import { Photo } from './types/Photo'
-import  { PhotoItem } from './components/PhotoItem'
+import { useEffect } from 'react';
+import * as C from './App.styles';
+import { Character } from './components/Character';
+import { useCharacter } from './hooks/useCharacter';
 
 const App = () => {
-  const [ uploading, setUploading ] = useState(false)
-  const [ loading, setLoading ] = useState(false)
-  const [ data, setData ] = useState<Photo[]>([]) 
+  const player1 = useCharacter('Daniel', 13, 5);
+  const player2 = useCharacter('Gisele', 3, 5);
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+  }, []);
 
-  useEffect(()=>{
-    getPhotos()
-  }, [])
-  const getPhotos = async () => {
-    setLoading(true)
-    setData(await Photos.getAll())
-    setLoading(false)
-  }
-  const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    const file = formData.get('image') as File;
-    if(file && file.size > 0) {
-      setUploading(true)
-      const result = await Photos.insert(file)
-      setUploading(false)
-      if(result instanceof Error) {
-        alert(`${result.name} - ${result.message}`)
-        return
-      }
-      setData([...data, result])
+  const handleKeyDown = (e: KeyboardEvent) => {
+    switch(e.code) {
+      case 'KeyA':
+        player2.moveLeft();
+        break;
+      case 'KeyW':
+        player2.moveUp();
+        break;
+      case 'KeyD':
+        player2.moveRight();
+        break;
+      case 'KeyS':
+        player2.moveDown();
+        break;
+      case 'ArrowLeft':
+        player1.moveLeft();
+        break;
+      case 'ArrowUp':
+        player1.moveUp();
+        break;
+      case 'ArrowRight':
+        player1.moveRight();
+        break;
+      case 'ArrowDown':
+        player1.moveDown();
+        break;
     }
   }
   return (
     <C.Container>
-      <C.Area>
-        <C.Header>Galeria de fotos</C.Header>
-        <C.UploadForm method="POST" onSubmit={handleFormSubmit}>
-          <input type="file" name="image" />
-          {!uploading && 
-            <input type="submit" value="Enviar" />}
-          {uploading && "Enviando..."}
-        </C.UploadForm>
-        {loading &&
-          <C.ScreenWarning>
-            <div className="emoji">🤚</div>
-            <div>Carregando...</div>
-          </C.ScreenWarning>
-        }
-        {!loading && data.length > 0 &&
-          <C.PhotoList>
-            {data.map((item, index)=>(
-              <PhotoItem
-                key={index}
-                name={item.name}
-                url={item.url}
-                 />
-            ))}
-          </C.PhotoList>
-        }
-        {!loading && data.length === 0 &&
-          <C.ScreenWarning>
-            <div className="emoji">😞</div>
-            <div>Não há fotos cadastradas.</div>
-          </C.ScreenWarning>
-        }
-      </C.Area>
+      <C.Map>
+        <Character x={player1.x} y={player1.y} side={player1.side} name={player1.name} />
+        <Character x={player2.x} y={player2.y} side={player2.side} name={player2.name} />
+      </C.Map>
     </C.Container>
-  )
+  );
 }
 export default App;
