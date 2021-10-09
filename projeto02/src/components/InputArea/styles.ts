@@ -1,13 +1,19 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-    background-color: #FFF;
+    background-color: #fff;
     box-shadow: 0px 0px 5px #CCC;
     border-radius: 10px;
     padding: 20px;
     margin-top: 20px;
     display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
     align-items: center;
+
+    @media (min-width: 600px){
+        flex-direction: row;
+    }
 `;
 export const InputLabel = styled.label`
     flex: 1;
