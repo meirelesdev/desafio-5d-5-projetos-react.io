@@ -4,45 +4,76 @@ import { Character } from './components/Character';
 import { useCharacter } from './hooks/useCharacter';
 
 const App = () => {
-  const player1 = useCharacter('Daniel', 13, 5);
-  const player2 = useCharacter('Gisele', 3, 5);
+  const player1 = useCharacter('Player 1', 13, 5);
+  const player2 = useCharacter('Player 2', 3, 5);
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
   }, []);
-
   const handleKeyDown = (e: KeyboardEvent) => {
     switch(e.code) {
       case 'KeyA':
-        player2.moveLeft();
+        if(e.altKey){
+          player2.moveLeft(2);
+        } else {
+          player2.moveLeft();
+        }
         break;
       case 'KeyW':
-        player2.moveUp();
+        if(e.altKey){
+          player2.moveUp(2);
+        } else {
+          player2.moveUp();
+        }
         break;
       case 'KeyD':
-        player2.moveRight();
+        if(e.altKey){
+          player2.moveRight(2);
+        } else {
+          player2.moveRight();
+        }
         break;
       case 'KeyS':
-        player2.moveDown();
+        if(e.altKey){
+          player2.moveDown(2);
+        } else {
+          player2.moveDown();
+        }
         break;
       case 'ArrowLeft':
-        player1.moveLeft();
+        if(e.ctrlKey){
+          player1.moveLeft(2)
+        } else {
+          player1.moveLeft();
+        }
         break;
       case 'ArrowUp':
-        player1.moveUp();
+        if(e.ctrlKey){
+          player1.moveUp(2);
+        } else {
+          player1.moveUp();
+        }
         break;
       case 'ArrowRight':
-        player1.moveRight();
+        if(e.ctrlKey){
+          player1.moveRight(2);
+        } else {
+          player1.moveRight();
+        }
         break;
       case 'ArrowDown':
-        player1.moveDown();
+        if(e.ctrlKey){
+          player1.moveDown(2);
+        } else {
+          player1.moveDown();
+        }
         break;
     }
   }
   return (
     <C.Container>
       <C.Map>
-        <Character x={player1.x} y={player1.y} side={player1.side} name={player1.name} />
-        <Character x={player2.x} y={player2.y} side={player2.side} name={player2.name} />
+        <Character x={player1.x} y={player1.y} side={player1.side} changeName={player1.setName} name={player1.name}  />
+        <Character x={player2.x} y={player2.y} side={player2.side} changeName={player2.setName} name={player2.name} />
       </C.Map>
     </C.Container>
   );

@@ -6,39 +6,36 @@ export const useCharacter = (propName: string, x: number, y: number) => {
     const [name, setName] = useState(propName);
     const [pos, setPos] = useState({ x, y });
     const [side, setSide] = useState<CharacterSides>('down');
-    const moveLeft = () => {
+    const moveLeft = (x = 1) => {
         setPos(pos => ({
-            x: canMove(pos.x - 1, pos.y) ? pos.x - 1 : pos.x,
+            x: canMove(pos.x - x, pos.y) ? pos.x - x : pos.x,
             y: pos.y
         }));
         setSide('left');
     }
-    const moveRight = () => {
+    const moveRight = (x = 1) => {
         setPos(pos => ({
-            x: canMove(pos.x + 1, pos.y) ? pos.x + 1 : pos.x,
+            x: canMove(pos.x + x, pos.y) ? pos.x + x : pos.x,
             y: pos.y
         }));
         setSide('right');
     }
-    const moveDown = () => {
+    const moveDown = (y = 1) => {
         setPos(pos => ({
             x: pos.x,
-            y: canMove(pos.x, pos.y + 1) ? pos.y + 1 : pos.y
+            y: canMove(pos.x, pos.y + y) ? pos.y + y : pos.y
         }));
         setSide('down');
     }
-    const moveUp = () => {
+    const moveUp = (y = 1) => {
         setPos(pos => ({
             x: pos.x,
-            y: canMove(pos.x, pos.y - 1) ? pos.y - 1 : pos.y
+            y: canMove(pos.x, pos.y - y) ? pos.y - y : pos.y
         }));
         setSide('up');
     }
     const canMove = (x: number, y: number) => {
-        if(mapSpots[y] !== undefined && mapSpots[y][x] !== undefined) {
-            return (mapSpots[y][x] === 1);
-        }
-        return false;
+        if(mapSpots[y] !== undefined && mapSpots[y][x] !== undefined) return (mapSpots[y][x] === 1);
     }
     return {
         name,
@@ -48,6 +45,7 @@ export const useCharacter = (propName: string, x: number, y: number) => {
         moveLeft,
         moveRight,
         moveDown,
-        moveUp
+        moveUp,
+        setName
     };
 }
